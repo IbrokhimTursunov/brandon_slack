@@ -20,7 +20,6 @@ def create_workspace(email):
         for input_field, digit in zip(input_fields, code):
             input_field.clear()
             input_field.send_keys(digit)
-            time.sleep(0.25)
 
     browser = webdriver.Chrome(executable_path=DRIVER_LOCATION)
     browser.get(URL_CREATE)
@@ -30,24 +29,38 @@ def create_workspace(email):
                                                               .presence_of_element_located((By.ID, sign_up_id)))
         email_input.clear()
         email_input.send_keys(email)
+        submit_button = WebDriverWait(browser, TIME_WAIT).until(
+            expected_conditions.element_to_be_clickable((By.ID, 'submit_btn')))
+        submit_button.click()
+        WebDriverWait(browser, TIME_WAIT).until(expected_conditions
+                                                .presence_of_all_elements_located(
+            (By.CLASS_NAME, 'inline_input')))
+
+        # TODO: request for verification code
+        code = str(random.randint(0, 999999))
+        submit_code(code)
+        input_company_name = WebDriverWait(browser, TIME_WAIT).until(expected_conditions
+                                                                     .presence_of_element_located(
+            (By.ID, 'signup_team_name')))
+
+        input_company_name.clear()
+        input_company_name.send_keys('')  # TODO add company name
+        submit_button = WebDriverWait(browser, TIME_WAIT).until(
+            expected_conditions.element_to_be_clickable((By.ID, 'submit_btn')))
+        submit_button.click()
+        input_project_name = WebDriverWait(browser, TIME_WAIT).until(expected_conditions
+                                                                     .presence_of_element_located(
+            (By.ID, 'channel_name')))
+        input_project_name.clear()
+        input_project_name.send_keys('')  # TODO project name. Max is 21 characters!
+        submit_button = WebDriverWait(browser, TIME_WAIT).until(
+            expected_conditions.element_to_be_clickable((By.ID, 'submit_btn')))
+        submit_button.click()
+
     except TimeoutException as error:
         pass
-    submit_button = WebDriverWait(browser, TIME_WAIT).until(expected_conditions.element_to_be_clickable((By.ID, 'submit_btn')))
-    submit_button.click()
-    WebDriverWait(browser, TIME_WAIT).until(expected_conditions
-                                            .presence_of_element_located((By.CLASS_NAME, 'confirmation_code_group')))
-
-    # TODO: request to mailgun for code
-    code = str(random.randint(0,999999))
-    submit_code(code)
-    company_name = WebDriverWait(browser, TIME_WAIT).until(expected_conditions
-                                            .presence_of_element_located((By.ID, 'signup_team_name')))
-    company_name.clear()
-    submit_button = WebDriverWait(browser, TIME_WAIT).until(
-        expected_conditions.element_to_be_clickable((By.ID, 'submit_btn')))
-    submit_button.click()
 
 
 if __name__ == '__main__':
-    create_workspace('ibragim1989@gmail.com')
+    create_workspace('testtesttest@gmail.com')
 
