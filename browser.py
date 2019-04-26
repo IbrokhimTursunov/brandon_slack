@@ -3,11 +3,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from celery import Celery
 
 import time
+import random
 
 from settings import DRIVER_LOCATION, URL_CREATE, TIME_WAIT
 
+app = Celery('slack', backend='amqp', broker='amqp://')
+
+@app.task
 def create_workspace(email):
 
     def submit_code(code):
@@ -33,8 +38,8 @@ def create_workspace(email):
                                             .presence_of_element_located((By.CLASS_NAME, 'confirmation_code_group')))
 
     # TODO: request to mailgun for code
-    submit_code('123456')
-    time.sleep(5)
+    code = str(random.randint(0,999999))
+    submit_code(code)
     company_name = WebDriverWait(browser, TIME_WAIT).until(expected_conditions
                                             .presence_of_element_located((By.ID, 'signup_team_name')))
     company_name.clear()
