@@ -1,19 +1,18 @@
+from brandon_slack.celery import app
+from brandon_slack.settings import DRIVER_LOCATION, URL_CREATE, TIME_WAIT
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-from celery import Celery
 
 import time
 import random
 
-from settings import DRIVER_LOCATION, URL_CREATE, TIME_WAIT
-
-app = Celery('slack', backend='amqp', broker='amqp://')
 
 @app.task
-def create_workspace(email):
+def create_workspace(email, workspace_name):
 
     def submit_code(code):
         input_fields = browser.find_elements_by_class_name('inline_input')
@@ -59,8 +58,3 @@ def create_workspace(email):
 
     except TimeoutException as error:
         pass
-
-
-if __name__ == '__main__':
-    create_workspace('testtesttest@gmail.com')
-

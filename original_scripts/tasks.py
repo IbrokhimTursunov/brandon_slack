@@ -1,6 +1,6 @@
-from browser import create_workspace
-from database import Emails
-from csv_file import CSVFile
+from original_scripts.browser import create_workspace
+from original_scripts.database import Emails
+from original_scripts.csv_file import CSVFile
 
 emails = CSVFile().read_emails()
 db = Emails()

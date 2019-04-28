@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, exists, MetaData, Table, Column, String, Integer, Boolean
+from sqlalchemy import create_engine, MetaData, Table, Column, String, Integer, Boolean
 from sqlalchemy.exc import NoSuchTableError
 
-from settings import URL_CONNECTION_TO_DATABASE
+from original_scripts.settings import URL_CONNECTION_TO_DATABASE
 
 class Emails:
     def __init__(self):

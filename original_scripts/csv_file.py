@@ -1,6 +1,6 @@
 import csv
 
-from settings import FILE_NAME_CSV
+from original_scripts.settings import FILE_NAME_CSV
 
 class CSVFile:
     def __init__(self):
